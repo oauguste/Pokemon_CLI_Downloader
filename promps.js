@@ -1,6 +1,8 @@
 import inquirer from "inquirer";
 import { createFolder } from "./saving.js";
+import {savePokemonSprites} from "./saving.js"
 //import { ParseOptions } from "./saving.js";
+let globalPokemonName;
 const fetchPokemon = async (pokemonName) => {
   const pokemonFetched = await fetch(
     "https://pokeapi.co/api/v2/pokemon/" + pokemonName
@@ -43,7 +45,9 @@ const promptForPokemon = async () => {
         answer.pokemonName.toLowerCase()
       );
       console.log(answer.pokemonName.toLowerCase());
-      await createFolder(answer.pokemonName)
+      await createFolder(answer.pokemonName);
+      globalPokemonName = await answer.pokemonName;
+      return globalPokemonName;
     });
 };
 
@@ -60,14 +64,29 @@ const promptForDownloadInfo = async () => {
     ])
     .then(async (answers) => {
       const userPick = await answers.downloadChoice;
+      const chosenPokemon = await fetchPokemon(
+        globalPokemonName
+      );
       //
       if (userPick.includes("stats")) {
+        console.log(chosenPokemon.stats);
+
         console.log("stats selected, performing action 1");
         //savePokemonStats()
       } else {
         console.log("Stats isnt selected");
       }
       if (userPick.includes("sprites")) {
+        const frontDefault = await chosenPokemon.sprites.front_default
+        const backDefault = await chosenPokemon.sprites.back_default
+        await savePokemonSprites(globalPokemonName,frontDefault,"Front")
+        await savePokemonSprites(globalPokemonName,backDefault,"Back")
+        const frontShinyDefault = await chosenPokemon.sprites.front_shiny
+        const backShinyDefault = await chosenPokemon.sprites.back_shiny
+        await savePokemonSprites(globalPokemonName,frontShinyDefault,"Front-Shiny")
+        await savePokemonSprites(globalPokemonName,backShinyDefault,"Back-Shiny")
+        
+        console.log(chosenPokemon.sprites.front_default);
         console.log(
           "sprites selected, performing action 2"
         );
@@ -76,6 +95,10 @@ const promptForDownloadInfo = async () => {
         console.log("sprites isnt selected");
       }
       if (userPick.includes("artwork")) {
+        const frontArtwork = await chosenPokemon.sprites.other["official-artwork"].front_default
+        await savePokemonSprites(globalPokemonName,frontArtwork,"Artwork")
+        const frontShinyArtwork = await chosenPokemon.sprites.other["official-artwork"].front_shiny
+        await savePokemonSprites(globalPokemonName,frontShinyArtwork,"Shiny-Artwork")
         console.log(
           "artwork selected, performing action 3"
         );
@@ -93,21 +116,26 @@ const promptToContinue = async () => {
         type: "confirm",
         name: "playAgain",
         message: "Nice Work, would you like to try again?",
-        default: false
+        default: false,
       },
     ])
     .then(async (answer) => {
       if (answer.playAgain) {
-        console.log("Make another selection")
+        console.log("Make another selection");
         // await promptUser();
       } else {
-        console.log("Game Over")
+        console.log("Game Over");
         // return;
       }
     });
 };
 
-const promptUser = async () =>{};
+const promptUser = async () => {
+  await promptForPokemon();
+
+  await promptForDownloadInfo();
+  await console.log(globalPokemonName);
+};
 
 export { promptUser };
 
@@ -117,6 +145,8 @@ export { promptUser };
 //     console.log(object.sprites)
 // })
 
-await promptForPokemon();
-//await promptForDownloadInfo();
 //await promptToContinue()
+
+//await promptUser()
+
+promptUser();

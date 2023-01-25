@@ -16,10 +16,12 @@ const createFolder = async (folderName) => {
 
 const saveImageFile = async (filePath, ArrayBuffer) => {
   try {
-    const fetchImageFile = await fetch(link)
-    const toArrayBuffer = await Buffer.from(fetchImageFile.arrayBuffer())
-     
-    return await fs.writeFile(`${pokemonName}.png`, )
+    const fetchImageFile = await fetch(ArrayBuffer);
+    const toArrayBuffer =
+      await fetchImageFile.arrayBuffer();
+    const pokemonImage = await Buffer.from(toArrayBuffer);
+
+    //return await fs.writeFile(filePath, toArrayBuffer )
   } catch (error) {
     console.log(error);
   }
@@ -32,10 +34,23 @@ const savePokemonStats = async (
 
 const savePokemonSprites = async (
   folderName,
-  pokemonSpritessObject
+  pokemonSpritessObject,fileName
 ) => {
-  //eg. back_shiny.png
-  //eg. front_shiny.png
+  try {
+    const fetchImageFile = await fetch(
+      pokemonSpritessObject
+    );
+    const toArrayBuffer =
+      await fetchImageFile.arrayBuffer();
+    const pokemonImage = await Buffer.from(toArrayBuffer);
+
+    await fs.writeFile(
+      `./${folderName}/${folderName}${fileName}.png`,
+      pokemonImage
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const savePokemonArtwork = async (
@@ -50,3 +65,4 @@ const parseOptions = async (
 
 export { parseOptions };
 export { createFolder };
+export {savePokemonSprites}
