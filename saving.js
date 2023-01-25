@@ -29,12 +29,36 @@ const saveImageFile = async (filePath, ArrayBuffer) => {
 
 const savePokemonStats = async (
   folderName,
-  pokemonStatsObject
-) => {};
+  pokemonStatsObject,
+  fileName
+) => {
+  try {
+    let statsArray = [];
+    // const fetchText = await fetch(pokemonStatsObject);
+    //const statsText = await fetchText.text()
+    for await (const item of pokemonStatsObject) {
+      await statsArray.push(`
+        ${item.stat.name}: ${item.base_stat} \n` 
+        
+      );
+    }
+    await fs.writeFile(
+      `./${folderName}/${folderName}${fileName}.txt`,
+      statsArray,
+      "utf-8",
+      (err) => {
+        if (err) throw err;
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const savePokemonSprites = async (
   folderName,
-  pokemonSpritessObject,fileName
+  pokemonSpritessObject,
+  fileName
 ) => {
   try {
     const fetchImageFile = await fetch(
@@ -65,4 +89,4 @@ const parseOptions = async (
 
 export { parseOptions };
 export { createFolder };
-export {savePokemonSprites}
+export { savePokemonSprites, savePokemonStats };
