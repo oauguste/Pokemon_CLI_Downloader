@@ -1,4 +1,5 @@
 import inquirer from "inquirer";
+import { createFolder } from "./saving.js";
 //import { ParseOptions } from "./saving.js";
 const fetchPokemon = async (pokemonName) => {
   const pokemonFetched = await fetch(
@@ -42,7 +43,7 @@ const promptForPokemon = async () => {
         answer.pokemonName.toLowerCase()
       );
       console.log(answer.pokemonName.toLowerCase());
-      //createFolder(answer.pokemonName)
+      await createFolder(answer.pokemonName)
     });
 };
 
@@ -117,5 +118,5 @@ export { promptUser };
 // })
 
 await promptForPokemon();
-await promptForDownloadInfo();
-await promptToContinue()
+//await promptForDownloadInfo();
+//await promptToContinue()
