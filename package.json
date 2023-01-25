@@ -1,0 +1,24 @@
+{
+  "name": "pokemon_cli_downloader",
+  "version": "1.0.0",
+  "description": "This is a command line interface app that allows you to downloader pokemon pictures and their stats from an api to various folders",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oauguste/Pokemon_CLI_Downloader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/oauguste/Pokemon_CLI_Downloader/issues"
+  },
+  "homepage": "https://github.com/oauguste/Pokemon_CLI_Downloader#readme",
+  "dependencies": {
+    "inquirer": "^9.1.4"
+  }
+}
