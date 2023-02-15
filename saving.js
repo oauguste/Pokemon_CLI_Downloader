@@ -38,9 +38,7 @@ const savePokemonStats = async (
     //const statsText = await fetchText.text()
     for await (const item of pokemonStatsObject) {
       await statsArray.push(`
-        ${item.stat.name}: ${item.base_stat} \n` 
-        
-      );
+        ${item.stat.name}: ${item.base_stat} \n`);
     }
     await fs.writeFile(
       `./${folderName}/${folderName}${fileName}.txt`,
